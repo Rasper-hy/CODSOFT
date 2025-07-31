@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Multi-Currency Converter</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 30px;
+      background: #f2f2f2;
+    }
+    label, select, input, button {
+      margin: 10px 0;
+      padding: 10px;
+      width: 250px;
+    }
+    button {
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>💱 Currency Converter</h2>
+
+  <label for="fromCurrency">From Currency:</label>
+  <select id="fromCurrency">
+    <option value="USD">USD</option>
+    <option value="EUR">EUR</option>
+    <option value="INR">INR</option>
+    <option value="GBP">GBP</option>
+    <option value="JPY">JPY</option>
+  </select>
+
+  <label for="toCurrency">To Currency:</label>
+  <select id="toCurrency">
+    <option value="EUR">EUR</option>
+    <option value="USD">USD</option>
+    <option value="INR">INR</option>
+    <option value="GBP">GBP</option>
+    <option value="JPY">JPY</option>
+  </select>
+
+  <label for="amount">Amount:</label>
+  <input type="number" id="amount" placeholder="Enter amount" />
+
+  <button onclick="convert()">Convert</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function convert() {
+      const from = document.getElementById("fromCurrency").value;
+      const to = document.getElementById("toCurrency").value;
+      const amount = document.getElementById("amount").value;
+
+      const resultDiv = document.getElementById("result");
+
+      if (!amount || amount <= 0) {
+        resultDiv.innerText = "🚫 Enter a valid amount!";
+        return;
+      }
+
+      try {
+        const res = await fetch(`https://api.exchangerate-api.com/v4/latest/${from}`);
+        const data = await res.json();
+        const rate = data.rates[to];
+
+        if (!rate) {
+          resultDiv.innerText = `❌ Cannot convert from ${from} to ${to}.`;
+          return;
+        }
+
+        const converted = (amount * rate).toFixed(2);
+        resultDiv.innerText = `✅ ${amount} ${from} = ${converted} ${to}`;
+      } catch (error) {
+        resultDiv.innerText = "⚠️ Error fetching data.";
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>

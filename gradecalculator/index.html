@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Grade Calculator</title>
+</head>
+<body>
+  <h2>Student Grade Calculator</h2>
+  <input id="marks" type="text" placeholder="Enter marks: e.g., 80, 90, 70"><br><br>
+  <button onclick="calculate()">Calculate</button>
+  <p id="output"></p>
+
+  <script>
+    function calculate() {
+      const input = document.getElementById("marks").value;
+      const marks = input.split(',').map(m => parseFloat(m.trim())).filter(m => !isNaN(m));
+      
+      if (marks.length === 0) {
+        document.getElementById("output").innerText = "Please enter valid marks.";
+        return;
+      }
+
+      const total = marks.reduce((a, b) => a + b, 0);
+      const avg = total / marks.length;
+      let grade = '';
+
+      if (avg >= 90) grade = 'A+';
+      else if (avg >= 80) grade = 'A';
+      else if (avg >= 70) grade = 'B';
+      else if (avg >= 60) grade = 'C';
+      else if (avg >= 50) grade = 'D';
+      else grade = 'F';
+
+      document.getElementById("output").innerText =
+        `Total Marks: ${total.toFixed(2)}\nAverage: ${avg.toFixed(2)}%\nGrade: ${grade}`;
+    }
+  </script>
+</body>
+</html>
