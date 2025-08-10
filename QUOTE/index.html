@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quote of the Day</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .quote {
+      font-size: 1.4rem;
+      margin: 1rem 0;
+      color: #333;
+    }
+    button {
+      margin: 0.5rem;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li::before {
+      content: '⭐ ';
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌟 Quote of the Day</h1>
+    <p class="quote" id="quote">Loading...</p>
+    <button onclick="getQuote()">🔄 New Quote</button>
+    <button onclick="shareQuote()">📤 Share</button>
+    <button onclick="saveQuote()">❤️ Save</button>
+
+    <h3>⭐ Favorites</h3>
+    <ul id="favorites"></ul>
+  </div>
+<script>
+  const quoteEl = document.getElementById('quote');
+  const favoritesEl = document.getElementById('favorites');
+  let currentQuote = '';
+
+  // Offline quotes array
+  const quotes = [
+    "Believe in yourself and all that you are.",
+    "Dream big and dare to fail.",
+    "Do something today that your future self will thank you for.",
+    "Your limitation—it’s only your imagination.",
+    "Push yourself, because no one else is going to do it for you."
+  ];
+
+  function getQuote() {
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    currentQuote = quotes[randomIndex];
+    quoteEl.textContent = `"${currentQuote}"`;
+  }
+
+  function saveQuote() {
+    const li = document.createElement('li');
+    li.textContent = currentQuote;
+    favoritesEl.appendChild(li);
+  }
+
+  function shareQuote() {
+    if (navigator.share) {
+      navigator.share({ text: currentQuote });
+    } else {
+      navigator.clipboard.writeText(currentQuote);
+      alert('Quote copied!');
+    }
+  }
+
+  // Show a quote when page loads
+  window.onload = getQuote;
+</script>
+</body>
+</html>
