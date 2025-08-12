@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Commerce Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f8f8f8;
+      color: #333;
+    }
+    header {
+      background: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    header h1 {
+      margin: 0;
+      color: #ff6b6b;
+    }
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: #ff6b6b;
+    }
+    .banner {
+      background: url('https://source.unsplash.com/1600x500/?fashion') center/cover no-repeat;
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 2em;
+      font-weight: bold;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 10px;
+    }
+    .card-content h3 {
+      font-size: 1em;
+      margin: 5px 0;
+    }
+    .price {
+      color: #ff6b6b;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ShopEase</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Shop</a>
+      <a href="#">Blog</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <div class="banner">
+    Autumn Style - Dresses & Looks
+  </div>
+
+  <section class="products">
+    <div class="card">
+      <img src="https://source.unsplash.com/400x500/?dress" alt="Product">
+      <div class="card-content">
+        <h3>Elegant Red Dress</h3>
+        <p class="price">$49.99</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://source.unsplash.com/400x500/?shoes" alt="Product">
+      <div class="card-content">
+        <h3>Classic Black Heels</h3>
+        <p class="price">$35.50</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://source.unsplash.com/400x500/?handbag" alt="Product">
+      <div class="card-content">
+        <h3>Leather Handbag</h3>
+        <p class="price">$60.00</p>
+      </div>
+    </div>
+    <div class="card">
+      <img src="https://source.unsplash.com/400x500/?jacket" alt="Product">
+      <div class="card-content">
+        <h3>Denim Jacket</h3>
+        <p class="price">$40.75</p>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
