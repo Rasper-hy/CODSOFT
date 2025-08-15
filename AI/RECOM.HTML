@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommendation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #2196F3;
+        }
+        select, button {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .recommendations {
+            margin-top: 20px;
+        }
+        .item {
+            background: white;
+            padding: 10px;
+            margin: 5px auto;
+            width: 300px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Movie Recommendation System</h1>
+    <p>Select your favorite genre:</p>
+    <select id="genre">
+        <option value="">--Choose--</option>
+        <option value="Action">Action</option>
+        <option value="Comedy">Comedy</option>
+        <option value="Romance">Romance</option>
+        <option value="Horror">Horror</option>
+    </select>
+    <br>
+    <button onclick="recommend()">Get Recommendations</button>
+
+    <div class="recommendations" id="results"></div>
+
+    <script>
+        const movies = {
+            "Action": ["Mad Max: Fury Road", "John Wick", "The Dark Knight"],
+            "Comedy": ["The Hangover", "Superbad", "Step Brothers"],
+            "Romance": ["The Notebook", "La La Land", "Titanic"],
+            "Horror": ["The Conjuring", "Get Out", "A Quiet Place"]
+        };
+
+        function recommend() {
+            const genre = document.getElementById("genre").value;
+            const results = document.getElementById("results");
+            results.innerHTML = "";
+            if (genre && movies[genre]) {
+                results.innerHTML = `<h3>Recommended ${genre} Movies:</h3>`;
+                movies[genre].forEach(movie => {
+                    results.innerHTML += `<div class="item">${movie}</div>`;
+                });
+            } else {
+                results.innerHTML = "<p>Please select a genre!</p>";
+            }
+        }
+    </script>
+
+</body>
+</html>

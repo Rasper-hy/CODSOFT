@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic-Tac-Toe AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f4f4f4;
+        }
+        h1 {
+            color: #2196F3;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+            margin: 20px auto;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            font-size: 36px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .cell:hover {
+            background: #e0f7fa;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Tic-Tac-Toe AI</h1>
+    <div class="board" id="board"></div>
+    <button onclick="startGame()">Restart Game</button>
+
+    <script>
+        const human = 'X';
+        const ai = 'O';
+        let board = [];
+
+        function startGame() {
+            board = Array.from(Array(9).keys());
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                cell.innerText = '';
+                cell.addEventListener('click', handleTurnClick, false);
+            });
+        }
+
+        function handleTurnClick(e) {
+            if (typeof board[e.target.id] === 'number') {
+                turn(e.target.id, human);
+                if (!checkWin(board, human) && !checkTie()) turn(bestSpot(), ai);
+            }
+        }
+
+        function turn(squareId, player) {
+            board[squareId] = player;
+            document.getElementById(squareId).innerText = player;
+            let gameWon = checkWin(board, player);
+            if (gameWon) gameOver(gameWon);
+        }
+
+        function checkWin(board, player) {
+            let plays = board.reduce((a, e, i) => (e === player) ? a.concat(i) : a, []);
+            let winCombos = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            let gameWon = null;
+            for (let [index, win] of winCombos.entries()) {
+                if (win.every(elem => plays.indexOf(elem) > -1)) {
+                    gameWon = { index: index, player: player };
+                    break;
+                }
+            }
+            return gameWon;
+        }
+
+        function gameOver(gameWon) {
+            const cells = document.querySelectorAll('.cell');
+            for (let index of [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ][gameWon.index]) {
+                document.getElementById(index).style.backgroundColor =
+                    gameWon.player === human ? "lightgreen" : "pink";
+            }
+            cells.forEach(cell => cell.removeEventListener('click', handleTurnClick, false));
+        }
+
+        function emptySquares() {
+            return board.filter(s => typeof s === 'number');
+        }
+
+        function bestSpot() {
+            return minimax(board, ai).index;
+        }
+
+        function checkTie() {
+            if (emptySquares().length === 0) {
+                const cells = document.querySelectorAll('.cell');
+                cells.forEach(cell => cell.style.backgroundColor = "lightblue");
+                return true;
+            }
+            return false;
+        }
+
+        function minimax(newBoard, player) {
+            let availSpots = emptySquares();
+
+            if (checkWin(newBoard, human)) {
+                return { score: -10 };
+            } else if (checkWin(newBoard, ai)) {
+                return { score: 10 };
+            } else if (availSpots.length === 0) {
+                return { score: 0 };
+            }
+
+            let moves = [];
+            for (let i = 0; i < availSpots.length; i++) {
+                let move = {};
+                move.index = newBoard[availSpots[i]];
+                newBoard[availSpots[i]] = player;
+
+                if (player === ai) {
+                    let result = minimax(newBoard, human);
+                    move.score = result.score;
+                } else {
+                    let result = minimax(newBoard, ai);
+                    move.score = result.score;
+                }
+
+                newBoard[availSpots[i]] = move.index;
+                moves.push(move);
+            }
+
+            let bestMove;
+            if (player === ai) {
+                let bestScore = -10000;
+                for (let i = 0; i < moves.length; i++) {
+                    if (moves[i].score > bestScore) {
+                        bestScore = moves[i].score;
+                        bestMove = i;
+                    }
+                }
+            } else {
+                let bestScore = 10000;
+                for (let i = 0; i < moves.length; i++) {
+                    if (moves[i].score < bestScore) {
+                        bestScore = moves[i].score;
+                        bestMove = i;
+                    }
+                }
+            }
+            return moves[bestMove];
+        }
+
+        // Create the board UI
+        window.onload = function () {
+            const boardDiv = document.getElementById('board');
+            boardDiv.innerHTML = '';
+            for (let i = 0; i < 9; i++) {
+                let cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.setAttribute('id', i);
+                boardDiv.appendChild(cell);
+            }
+            startGame();
+        }
+    </script>
+
+</body>
+</html>
